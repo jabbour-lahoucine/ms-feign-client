@@ -21,6 +21,18 @@ spring:
       enabled: true
       path: /h2-console
 
+
+# Actuator configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  # Expose tous les endpoints Actuator
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      enabled: true
 #if you want to use Consul for service discovery, you can decoment the following lines in and comment the above ones :
 
 #spring:
@@ -58,3 +70,4 @@ spring:
 #  endpoint:
 #    health:
 #      show-details: always
+#---------------------------------
