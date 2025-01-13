@@ -1,30 +1,42 @@
 package com.example.client.controllers;
 
 import com.example.client.entities.Client;
-import com.example.client.services.ClientService;
+import com.example.client.modeles.ClientResponse;
+import com.example.client.repositories.ClientRepository;
+import com.example.client.services.ClientServiceFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/client")
 public class ClientController {
+
     @Autowired
-    private ClientService service;
+    private ClientRepository clientRepository;
+
+    @Autowired
+    private ClientServiceFeignClient clientServiceFeignClient;
 
     @GetMapping
     public List<Client> findAll() {
-        return service.findAll();
+        return clientRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public Client findById(@PathVariable Long id) throws Exception {
-        return service.findById(id);
+    public Optional<Client> findById(@PathVariable Long id) throws Exception {
+        return clientRepository.findById(id);
     }
 
     @PostMapping
     public void save(@RequestBody Client client) {
-        service.addClient(client);
+        clientRepository.save(client);
+    }
+
+    @GetMapping("/feign-client/{id}")
+    public ClientResponse getClientByIdWithCarsFeignClient(@PathVariable Long id) throws Exception {
+        return clientServiceFeignClient.getClientById(id);
     }
 }
